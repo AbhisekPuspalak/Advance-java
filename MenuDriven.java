@@ -1,23 +1,17 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class Main {
+public class MenuDriven {
 
     static final String URL = "jdbc:mysql://localhost:3306/studentdb";
     static final String USER = "root";
     static final String PASS = "Abhi@1234";
-
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
-
         try {
-
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASS);
-
             while (true) {
-
                 System.out.println("STUDENT MENU ");
                 System.out.println("1. Register");
                 System.out.println("2. Get Student By ID");
@@ -30,35 +24,27 @@ public class Main {
                 int choice = sc.nextInt();
 
                 switch (choice) {
-
-                    // Register
                     case 1:
                         System.out.print("Enter ID: ");
                         int id = sc.nextInt();
                         sc.nextLine();
-
                         System.out.print("Enter Name: ");
                         String name = sc.nextLine();
-
                         System.out.print("Enter Age: ");
                         int age = sc.nextInt();
                         sc.nextLine();
-
                         System.out.print("Enter Course: ");
                         String course = sc.nextLine();
-
                         String insert = "INSERT INTO student VALUES(?,?,?,?)";
                         PreparedStatement ps = con.prepareStatement(insert);
                         ps.setInt(1, id);
                         ps.setString(2, name);
                         ps.setInt(3, age);
                         ps.setString(4, course);
-
                         if (ps.executeUpdate() > 0)
                             System.out.println("Student Registered Successfully");
                         break;
 
-                    // Get Student By ID
                     case 2:
                         System.out.print("Enter ID: ");
                         id = sc.nextInt();
@@ -78,22 +64,17 @@ public class Main {
                             System.out.println("Student Not Found");
                         }
                         break;
-
-                    // Get All Students
                     case 3:
                         Statement st = con.createStatement();
                         rs = st.executeQuery("SELECT * FROM student");
 
                         while (rs.next()) {
-                            System.out.println("--------------------------");
                             System.out.println("ID      : " + rs.getInt(1));
                             System.out.println("Name    : " + rs.getString(2));
                             System.out.println("Age     : " + rs.getInt(3));
                             System.out.println("Course  : " + rs.getString(4));
                         }
                         break;
-
-                    // Update Student
                     case 4:
                         System.out.print("Enter ID: ");
                         id = sc.nextInt();
